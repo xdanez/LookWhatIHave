@@ -1,0 +1,21 @@
+name: LookWhatIHave
+version: '${version}'
+main: me.xdanez.lookwhatihave.LookWhatIHave
+api-version: '1.17'
+authors: [ xDaneZ ]
+description: Display your items in chat
+website: https://github.com/xdanez/LookWhatIHave
+
+commands:
+  lwih:
+    description: show info or reload config with /lwih reload
+    aliases:
+      - lookwhatihave
+
+permissions:
+  lookwhatihave.reload:
+    description: reload command
+    default: op
+  lookwhatihave.display.item:
+    description: required permission if 'requires-permission' is set to 'true'
+    default: op
