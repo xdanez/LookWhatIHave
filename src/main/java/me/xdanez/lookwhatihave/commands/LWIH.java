@@ -14,7 +14,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.yaml.snakeyaml.constructor.ConstructorException;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class LWIH implements CommandExecutor, TabCompleter {
@@ -39,9 +38,9 @@ public class LWIH implements CommandExecutor, TabCompleter {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String @NotNull [] args) {
-        if (commandSender.hasPermission(RELOAD_PERMISSION) && !Arrays.stream(args).toList().contains("reload"))
+        if (commandSender.hasPermission(RELOAD_PERMISSION) && !args[0].equalsIgnoreCase("reload"))
             return List.of("reload");
-        return null;
+        return List.of();
     }
 
     private Component defaultText(String text) {
