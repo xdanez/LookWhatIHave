@@ -11,6 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.intellij.lang.annotations.RegExp;
 
 import java.util.regex.Pattern;
 
@@ -31,7 +32,7 @@ public final class LookWhatIHave extends JavaPlugin implements Listener {
         Player player = e.getPlayer();
         if (requiresPermission() && !player.hasPermission("lookwhatihave.display.item")) return;
 
-        String key = "";
+        @RegExp String key = "";
         if (ignoreCase()) key += "(?i)";
         key += key();
 
