@@ -39,14 +39,39 @@ public final class LookWhatIHave extends JavaPlugin implements Listener {
         TextComponent msg = (TextComponent) e.message();
         if (!Pattern.compile(key).matcher(msg.content()).find()) return;
 
-        ItemStack item = player.getInventory().getItemInMainHand();
-        if (item.getType().equals(Material.AIR)) return;
+        ItemStack itemMainHand = player.getInventory().getItemInMainHand();
+        ItemStack itemOffHand = player.getInventory().getItemInOffHand();
 
-        int amt = item.getAmount();
+        Component replacement = itemsMessageReplacement(itemMainHand, itemOffHand);
+        if (replacement == null) return;
 
-        e.message(msg.replaceText(TextReplacementConfig.builder().match(key).replacement(
-                Component.text(amt > 1 ? amt + "x" : "").append(item.displayName())
-        ).build()));
+        e.message(msg.replaceText(TextReplacementConfig.builder().match(key).replacement(replacement).build()));
+    }
+
+    private Component itemsMessageReplacement(ItemStack itemMainHand, ItemStack itemOffHand) {
+        int amtMainHand = itemMainHand.getAmount();
+        int amtOffHand = itemOffHand.getAmount();
+
+        Component mainHandComp = null;
+        Component offHandComp = null;
+
+        if (!itemMainHand.getType().equals(Material.AIR)) {
+            mainHandComp =
+                    Component.text(amtMainHand > 1 ? amtMainHand + "x" : "")
+                            .append(itemMainHand.displayName());
+        }
+
+        if (includeOffHand() && !itemOffHand.getType().equals(Material.AIR)) {
+            offHandComp =
+                    Component.text(mainHandComp != null ? " / " : "").append(
+                            Component.text(amtOffHand > 1 ? amtOffHand + "x" : "")
+                                    .append(itemOffHand.displayName()));
+        }
+
+        if (mainHandComp == null) return offHandComp;
+        if (offHandComp == null) return mainHandComp;
+
+        return mainHandComp.append(offHandComp);
     }
 
     public static LookWhatIHave plugin() {
@@ -63,5 +88,9 @@ public final class LookWhatIHave extends JavaPlugin implements Listener {
 
     public boolean requiresPermission() {
         return getConfig().getBoolean("requires-permission");
+    }
+
+    public boolean includeOffHand() {
+        return getConfig().getBoolean("include-off-hand");
     }
 }
