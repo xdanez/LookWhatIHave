@@ -72,8 +72,9 @@ public class LWIH implements CommandExecutor, TabCompleter {
     }
 
     public static void validateConfig(@Nullable CommandSender sender) {
-        if (!validateTag("ignore-case-sensitivity", LookWhatIHave.plugin().getConfig().get("ignore-case-sensitivity")) ||
-                !validateTag("requires-permission", LookWhatIHave.plugin().getConfig().get("requires-permission"))) {
+        if (!validateTag("ignore-case-sensitivity")
+                || !validateTag("requires-permission")
+                || !validateTag("include-off-hand")) {
             if (sender != null)
                 sender.sendMessage(Component.text("Reloaded with errors").color(TextColor.color(0xffff00)));
             return;
@@ -82,7 +83,9 @@ public class LWIH implements CommandExecutor, TabCompleter {
             sender.sendMessage(Component.text("Successfully reloaded!").color(TextColor.color(0x00ff00)));
     }
 
-    private static boolean validateTag(String config, Object tag) {
+    private static boolean validateTag(String config) {
+        Object tag = LookWhatIHave.plugin().getConfig().get(config);
+
         if (tag != null) {
             String tagStr = tag.toString();
             if (tagStr.equalsIgnoreCase("true") || tagStr.equalsIgnoreCase("false")) return true;

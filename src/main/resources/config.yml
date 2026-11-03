@@ -1,3 +1,4 @@
 key: '.item'
 ignore-case-sensitivity: false # if true case for key will be ignored
 requires-permission: false # if true all players need the permission 'lookwhatihave.display.item' to display items in chat
+include-off-hand: true # if true items in offhand will be displayed
